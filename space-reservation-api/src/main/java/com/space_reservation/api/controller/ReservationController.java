@@ -1,7 +1,9 @@
 package com.space_reservation.api.controller;
 
+import com.space_reservation.api.dto.request.ReservationRequestDTO;
 import com.space_reservation.api.entity.Reservation;
 import com.space_reservation.api.service.ReservationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +17,8 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @PostMapping
-    public Reservation create(@RequestBody Reservation reservation) {
-        return reservationService.createReservation(reservation);
+    public Reservation create(@Valid @RequestBody ReservationRequestDTO dto) {
+        return reservationService.createReservation(dto);
     }
 
     @GetMapping
@@ -32,5 +34,10 @@ public class ReservationController {
     @DeleteMapping("/{id}")
     public void cancel(@PathVariable Long id) {
         reservationService.cancelReservation(id);
+    }
+
+    @PutMapping("/{id}/confirm")
+    public Reservation confirm(@PathVariable Long id) {
+        return reservationService.confirmReservation(id);
     }
 }

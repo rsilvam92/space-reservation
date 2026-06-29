@@ -1,30 +1,26 @@
 package com.space_reservation.api.entity;
 
-import com.space_reservation.api.entity.enums.SpaceType;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "espacio")
+@Table(name = "condominio")
 @Getter
 @Setter
-public class Space {
+public class Condominium {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nombre;
-    private String descripcion;
+    private String direccion;
+    private String ciudad;
 
-    @ManyToOne
-    @JoinColumn(name = "condominio_id")
-    private Condominium condominium;
-
-    @Enumerated(EnumType.STRING)
-    private SpaceType tipo;
+    @Column(name = "tipo_sector")
+    private String tipoSector;
 
     private Boolean activo = true;
 
@@ -32,7 +28,4 @@ public class Space {
     private LocalDateTime createdAt;
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    @OneToOne(mappedBy = "space", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private SpaceConfiguration configuracion;
 }

@@ -6,8 +6,11 @@ import lombok.*;
 @Getter
 @Setter
 public class SpaceResponseDTO {
-
     private Long id;
-    private String name;
-    private SpaceType type;
+    private String nombre;
+    private SpaceType tipo;
+    private String descripcion;
+    private boolean activo;
+    private Integer maxHorasReserva;
+    private Integer maxReservasSemana;
 }

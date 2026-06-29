@@ -1,5 +1,6 @@
 package com.space_reservation.api.service;
 
+import com.space_reservation.api.dto.request.SpaceRequestDTO;
 import com.space_reservation.api.entity.Space;
 import com.space_reservation.api.entity.enums.SpaceType;
 
@@ -7,7 +8,7 @@ import java.util.List;
 
 public interface SpaceService {
 
-    Space createSpace(Space space);
+    Space createSpace(SpaceRequestDTO space);
 
     List<Space> getAll();
 

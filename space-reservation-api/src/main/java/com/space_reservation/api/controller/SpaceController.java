@@ -1,8 +1,10 @@
 package com.space_reservation.api.controller;
 
+import com.space_reservation.api.dto.request.SpaceRequestDTO;
 import com.space_reservation.api.entity.Space;
 import com.space_reservation.api.entity.enums.SpaceType;
 import com.space_reservation.api.service.SpaceService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +18,8 @@ public class SpaceController {
     private final SpaceService spaceService;
 
     @PostMapping
-    public Space create(@RequestBody Space space) {
-        return spaceService.createSpace(space);
+    public Space create(@Valid @RequestBody SpaceRequestDTO dto) {
+        return spaceService.createSpace(dto);
     }
 
     @GetMapping

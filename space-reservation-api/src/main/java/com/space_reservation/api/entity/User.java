@@ -1,42 +1,50 @@
 package com.space_reservation.api.entity;
 
-import com.space_reservation.api.entity.enums.UserRole;
+import com.space_reservation.api.entity.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")
+@Table(name = "usuario")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String fullName;
+    @ManyToOne
+    @JoinColumn(name = "apartamento_id")
+    private Apartment apartment;
 
-    @Column(nullable = false, unique = true)
-    private String email;
+    @ManyToOne
+    @JoinColumn(name = "rol_id")
+    private Role role;
 
-    @Column(nullable = false, unique = true)
-    private String documentNumber;
+    private String nombre;
+    private String apellido;
 
-    @Column(nullable = false)
+    @Column(unique = true)
+    private String documento;
+
+    @Column(unique = true)
+    private String correo;
+
+    private String telefono;
     private String password;
 
+    @Column(name = "tipo_ocupante")
+    private String tipoOcupante;
+
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private UserRole role;
+    @Column(name = "estado", length = 20)
+    private UserStatus estado;
 
-    @Column(nullable = false)
-    private boolean active = false;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
-    // Relación con apartamento
-    @OneToOne
-    @JoinColumn(name = "apartment_id")
-    private Apartment apartment;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 }

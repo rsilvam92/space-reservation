@@ -1,28 +1,49 @@
 package com.space_reservation.api.mapper;
 
-import com.space_reservation.api.dto.SpaceDTO;
+import com.space_reservation.api.dto.request.SpaceRequestDTO;
 import com.space_reservation.api.dto.response.SpaceResponseDTO;
 import com.space_reservation.api.entity.Space;
+import com.space_reservation.api.entity.SpaceConfiguration;
 
 public class SpaceMapper {
 
-    public static Space toEntity(SpaceDTO dto) {
-        Space space = new Space();
+    public static Space toEntity(SpaceRequestDTO dto) {
+        if (dto == null) return null;
 
-        space.setName(dto.getName());
-        space.setType(dto.getType());
-        space.setMaxHours(dto.getMaxHours());
-        space.setMaxWeeklyReservations(dto.getMaxWeeklyReservations());
+        Space space = new Space();
+        space.setNombre(dto.getNombre());
+        space.setTipo(dto.getTipo());
+        space.setDescripcion(dto.getDescripcion());
+        space.setActivo(true);
+
+        if (dto.getMaxHorasReserva() != null || dto.getMaxReservasSemana() != null) {
+            SpaceConfiguration config = new SpaceConfiguration();
+            config.setMaxHorasReserva(dto.getMaxHorasReserva());
+            config.setMaxReservasSemana(dto.getMaxReservasSemana());
+
+            config.setSpace(space);
+            space.setConfiguracion(config);
+        }
 
         return space;
     }
 
     public static SpaceResponseDTO toDTO(Space space) {
-        SpaceResponseDTO dto = new SpaceResponseDTO();
+        if (space == null) return null;
 
+        SpaceResponseDTO dto = new SpaceResponseDTO();
         dto.setId(space.getId());
-        dto.setName(space.getName());
-        dto.setType(space.getType());
+        dto.setNombre(space.getNombre());
+        dto.setTipo(space.getTipo());
+        dto.setDescripcion(space.getDescripcion());
+
+
+        dto.setActivo(space.getActivo() != null ? space.getActivo() : false);
+
+        if (space.getConfiguracion() != null) {
+            dto.setMaxHorasReserva(space.getConfiguracion().getMaxHorasReserva());
+            dto.setMaxReservasSemana(space.getConfiguracion().getMaxReservasSemana());
+        }
 
         return dto;
     }

@@ -7,6 +7,8 @@ import com.space_reservation.api.repository.UserRepository;
 import com.space_reservation.api.security.JwtService;
 import com.space_reservation.api.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,26 +17,29 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
-    private final JwtService jwtService;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    @Override
     public LoginResponseDTO login(LoginRequestDTO request) {
 
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        User user = userRepository.findByCorreo(request.getCorreo())
+                .orElseThrow(() -> new BadCredentialsException("Credenciales incorrectas"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Credenciales inválidas");
+            throw new BadCredentialsException("Credenciales incorrectas");
         }
 
-        String token = jwtService.generateToken(
-                user.getEmail(),
-                user.getRole().name()
-        );
+        if (user.getEstado() != null && "PENDING".equalsIgnoreCase(user.getEstado().toString().trim())) {
+            throw new DisabledException("Tu usuario está pendiente de aprobación por el administrador.");
+        }
+
+
+        String token = jwtService.generateToken(user.getCorreo(), user.getRole().getNombre());
 
         LoginResponseDTO response = new LoginResponseDTO();
         response.setToken(token);
+        response.setRol(user.getRole().getNombre());
+        response.setNombreCompleto(user.getNombre() + " " + user.getApellido());
 
         return response;
     }

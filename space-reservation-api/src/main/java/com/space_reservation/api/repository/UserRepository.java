@@ -2,18 +2,18 @@ package com.space_reservation.api.repository;
 
 import com.space_reservation.api.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository
+        extends JpaRepository<User, Long> {
 
-    Optional<User> findByEmail(String email);
+    Optional<User> findByCorreo(String correo);
 
-    Optional<User> findByDocumentNumber(String documentNumber);
+    Optional<User> findByDocumento(String documento);
 
-    boolean existsByEmail(String email);
+    boolean existsByCorreo(String correo);
 
-    boolean existsByDocumentNumber(String documentNumber);
+    boolean existsByDocumento(String documento);
+
 }

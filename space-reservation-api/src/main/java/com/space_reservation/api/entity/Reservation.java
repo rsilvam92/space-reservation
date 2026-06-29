@@ -2,16 +2,17 @@ package com.space_reservation.api.entity;
 
 import com.space_reservation.api.entity.enums.ReservationStatus;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
-@Table(name = "reservations")
+@Table(name = "reserva")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Reservation {
 
     @Id
@@ -19,23 +20,44 @@ public class Reservation {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "usuario_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "space_id", nullable = false)
+    @JoinColumn(name = "espacio_id")
     private Space space;
 
-    @Column(nullable = false)
-    private LocalDateTime startTime;
+    private LocalDate fecha;
 
-    @Column(nullable = false)
-    private LocalDateTime endTime;
+    @Column(name = "hora_inicio")
+    private LocalTime horaInicio;
+
+    @Column(name = "hora_fin")
+    private LocalTime horaFin;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ReservationStatus status;
+    private ReservationStatus estado;
 
-    @Column(nullable = false)
-    private boolean confirmed = false;
+    @Column(name = "fecha_reserva")
+    private LocalDateTime fechaReserva;
+
+    @Column(name = "fecha_confirmacion")
+    private LocalDateTime fechaConfirmacion;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "update_at")
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void prePersist() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }

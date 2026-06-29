@@ -7,4 +7,6 @@ import lombok.Setter;
 @Setter
 public class LoginResponseDTO {
     private String token;
+    private String rol;
+    private String nombreCompleto;
 }
