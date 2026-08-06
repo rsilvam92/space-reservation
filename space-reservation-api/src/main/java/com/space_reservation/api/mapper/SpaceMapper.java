@@ -13,6 +13,7 @@ public class SpaceMapper {
         Space space = new Space();
         space.setNombre(dto.getNombre());
         space.setTipo(dto.getTipo());
+        space.setTipoPersonalizado(dto.getTipoPersonalizado());
         space.setDescripcion(dto.getDescripcion());
         space.setActivo(true);
 
@@ -35,6 +36,7 @@ public class SpaceMapper {
         dto.setId(space.getId());
         dto.setNombre(space.getNombre());
         dto.setTipo(space.getTipo());
+        dto.setTipoPersonalizado(space.getTipoPersonalizado());
         dto.setDescripcion(space.getDescripcion());
 
 

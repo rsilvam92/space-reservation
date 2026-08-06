@@ -23,6 +23,14 @@ public class SpaceServiceImpl implements SpaceService {
     @Override
     public Space createSpace(SpaceRequestDTO dto) {
 
+        String customType = null;
+        if (dto.getTipo() == SpaceType.CUSTOM) {
+            if (dto.getTipoPersonalizado() == null || dto.getTipoPersonalizado().isBlank()) {
+                throw new BusinessException("Escribe el nombre del tipo de espacio personalizado.");
+            }
+            customType = dto.getTipoPersonalizado().trim();
+        }
+
         if (spaceRepository.existsByNombre(dto.getNombre())) {
             throw new BusinessException("Ya existe un espacio con ese nombre");
         }
@@ -37,6 +45,7 @@ public class SpaceServiceImpl implements SpaceService {
         space.setNombre(dto.getNombre());
         space.setDescripcion(dto.getDescripcion());
         space.setTipo(dto.getTipo());
+        space.setTipoPersonalizado(customType);
         space.setCondominium(condominium);
         space.setActivo(true);
         space.setCreatedAt(java.time.LocalDateTime.now());

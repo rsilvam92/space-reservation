@@ -52,4 +52,5 @@ public interface ReservationRepository
             LocalDate finSemana
     );
 
+    Long countByEstado(ReservationStatus estado);
 }

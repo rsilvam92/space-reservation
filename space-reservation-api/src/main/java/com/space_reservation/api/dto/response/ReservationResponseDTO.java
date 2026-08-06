@@ -11,7 +11,9 @@ import java.time.LocalTime;
 @Setter
 public class ReservationResponseDTO {
     private Long id;
+    private Long usuarioId;
     private String usuarioNombre;
+    private Long espacioId;
     private String espacioNombre;
     private LocalDate fecha;
     private LocalTime horaInicio;

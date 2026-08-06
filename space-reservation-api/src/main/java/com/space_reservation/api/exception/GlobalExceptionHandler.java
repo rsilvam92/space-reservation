@@ -174,7 +174,9 @@ public class GlobalExceptionHandler {
             // 3. Si logramos identificar el campo, armamos el mensaje súper específico
             if (fieldName != null && !fieldName.isEmpty()) {
                 // Personalización especial si es una fecha o una hora
-                if (fieldName.equals("fecha")) {
+                if (fieldName.equals("tipo")) {
+                    cleanMessage = "El tipo de espacio seleccionado no es válido.";
+                } else if (fieldName.equals("fecha")) {
                     cleanMessage = "Error de formato en el campo 'fecha': Debe cumplir con el formato 'AAAA-MM-DD' (ej. 2026-06-29).";
                 } else if (fieldName.equals("horaInicio") || fieldName.equals("horaFin")) {
                     cleanMessage = String.format("Error de formato en el campo '%s': Debe cumplir con el formato de 24 horas 'HH:mm:ss' (ej. 13:00:00).", fieldName);

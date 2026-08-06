@@ -1,7 +1,7 @@
-// UserMapper.java
 package com.space_reservation.api.mapper;
 
 import com.space_reservation.api.dto.request.UserRegisterDTO;
+import com.space_reservation.api.dto.response.PendingUserDTO;
 import com.space_reservation.api.dto.response.UserResponseDTO;
 import com.space_reservation.api.entity.User;
 
@@ -31,13 +31,25 @@ public class UserMapper {
         dto.setEstado(user.getEstado() != null ? user.getEstado().name() : null);
 
         if (user.getRole() != null) {
-            dto.setRolNombre(user.getRole().getNombre());
+            dto.setRol(user.getRole().getNombre());
         }
 
         if (user.getApartment() != null) {
             dto.setApartamentoId(user.getApartment().getId());
-            dto.setApartamentoDetalle(user.getApartment().getSector() + " - " + user.getApartment().getNumero());
+            dto.setApartamento(user.getApartment().getSector() + " - " + user.getApartment().getNumero());
         }
+        return dto;
+    }
+
+    public static PendingUserDTO toPendingDTO(User user){
+        PendingUserDTO dto = new PendingUserDTO();
+        dto.setId(user.getId());
+        dto.setNombreCompleto(
+                user.getNombre()+" "+user.getApellido());
+        dto.setCorreo(user.getCorreo());
+        dto.setApartamento(
+                user.getApartment().getSector()+"-"+user.getApartment().getNumero());
+        dto.setFechaRegistro(user.getCreatedAt());
         return dto;
     }
 }

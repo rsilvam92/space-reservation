@@ -1,6 +1,7 @@
 package com.space_reservation.api.controller;
 
 import com.space_reservation.api.dto.request.UserRegisterDTO;
+import com.space_reservation.api.dto.response.PendingUserDTO;
 import com.space_reservation.api.dto.response.UserResponseDTO;
 import com.space_reservation.api.entity.User;
 import com.space_reservation.api.exception.BusinessException;
@@ -88,5 +89,10 @@ public class UserController {
         response.put("estado", "ACTIVE");
 
         return ResponseEntity.status(201).body(response);
+    }
+
+    @GetMapping("/pending")
+    public List<PendingUserDTO> getPendingUsers(){
+        return userService.getPendingUsers();
     }
 }

@@ -26,6 +26,9 @@ public class Space {
     @Enumerated(EnumType.STRING)
     private SpaceType tipo;
 
+    @Column(name = "tipo_personalizado", length = 80)
+    private String tipoPersonalizado;
+
     private Boolean activo = true;
 
     @Column(name = "created_at")

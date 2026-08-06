@@ -1,6 +1,7 @@
 package com.space_reservation.api.service;
 
 import com.space_reservation.api.dto.request.UserRegisterDTO;
+import com.space_reservation.api.dto.response.PendingUserDTO;
 import com.space_reservation.api.entity.User;
 
 import java.util.List;
@@ -19,4 +20,5 @@ public interface UserService {
     void approveUser(Long userId);
 
     User registerAdmin(UserRegisterDTO user);
+    List<PendingUserDTO> getPendingUsers();
 }

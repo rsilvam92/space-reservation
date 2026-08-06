@@ -3,12 +3,14 @@ package com.space_reservation.api.dto.response;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
-public class LoginResponseDTO {
+public class PendingUserDTO {
     private Long id;
-    private String correo;
     private String nombreCompleto;
-    private String rol;
-    private String token;
+    private String correo;
+    private String apartamento;
+    private LocalDateTime fechaRegistro;
 }

@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CondominiumRepository
         extends JpaRepository<Condominium, Long> {
+
+    boolean existsByNombreIgnoreCase(String nombre);
 }

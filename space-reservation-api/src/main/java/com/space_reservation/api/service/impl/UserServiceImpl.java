@@ -1,6 +1,7 @@
 package com.space_reservation.api.service.impl;
 
 import com.space_reservation.api.dto.request.UserRegisterDTO;
+import com.space_reservation.api.dto.response.PendingUserDTO;
 import com.space_reservation.api.entity.Apartment;
 import com.space_reservation.api.entity.Role;
 import com.space_reservation.api.entity.User;
@@ -105,5 +106,15 @@ public class UserServiceImpl implements UserService {
         admin.setEstado(UserStatus.ACTIVE);
 
         return userRepository.save(admin);
+    }
+
+    @Override
+    public List<PendingUserDTO> getPendingUsers() {
+
+        return userRepository.findByEstado(UserStatus.PENDING)
+                .stream()
+                .map(UserMapper::toPendingDTO)
+                .toList();
+
     }
 }

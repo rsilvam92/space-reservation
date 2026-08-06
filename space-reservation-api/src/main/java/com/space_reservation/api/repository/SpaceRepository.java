@@ -17,4 +17,6 @@ public interface SpaceRepository
 
     boolean existsByNombre(String nombre);
 
+    Long countByActivoTrue();
+
 }

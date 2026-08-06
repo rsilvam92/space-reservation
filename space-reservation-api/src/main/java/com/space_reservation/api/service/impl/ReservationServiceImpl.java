@@ -115,7 +115,8 @@ public class ReservationServiceImpl implements ReservationService {
                 }
             }
 
-            case SAUNA -> {
+            case SAUNA, TURKISH_BATH, PADEL_COURT, MULTIPURPOSE_COURT,
+                    SOCCER_FIELD, GYM, POOL, BBQ_AREA, GAME_ROOM, PLAYGROUND, CUSTOM -> {
             }
 
         }

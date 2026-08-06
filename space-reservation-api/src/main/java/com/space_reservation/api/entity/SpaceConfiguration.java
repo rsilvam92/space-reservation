@@ -1,5 +1,6 @@
 package com.space_reservation.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,6 +16,7 @@ public class SpaceConfiguration {
 
     @ManyToOne
     @JoinColumn(name = "espacio_id")
+    @JsonIgnore
     private Space space;
 
     @Column(name = "max_horas_reserva")

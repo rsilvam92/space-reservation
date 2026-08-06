@@ -9,4 +9,5 @@ public class ApartmentResponseDTO {
     private String sector;
     private String numero;
     private String estado;
+    private String codigo;
 }
