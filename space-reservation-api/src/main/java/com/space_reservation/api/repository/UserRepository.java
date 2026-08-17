@@ -26,4 +26,8 @@ public interface UserRepository
 
     Long countByEstado(UserStatus estado);
 
+    Long countByApartmentCondominiumId(Long condominiumId);
+
+    Long countByEstadoAndApartmentCondominiumId(UserStatus estado, Long condominiumId);
+
 }

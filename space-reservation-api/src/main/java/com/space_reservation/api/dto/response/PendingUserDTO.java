@@ -12,5 +12,6 @@ public class PendingUserDTO {
     private String nombreCompleto;
     private String correo;
     private String apartamento;
+    private Long condominiumId;
     private LocalDateTime fechaRegistro;
 }

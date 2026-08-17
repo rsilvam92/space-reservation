@@ -22,31 +22,54 @@ public class DashboardServiceImpl
     private final SpaceRepository spaceRepository;
 
     @Override
-    public DashboardDTO getDashboard(){
+    public DashboardDTO getDashboard(Long condominiumId) {
 
         DashboardDTO dto = new DashboardDTO();
 
-        dto.setTotalUsuarios(userRepository.count());
+        if (condominiumId == null) {
+            dto.setTotalUsuarios(userRepository.count());
+            dto.setUsuariosPendientes(userRepository.countByEstado(UserStatus.PENDING));
+            dto.setUsuariosActivos(userRepository.countByEstado(UserStatus.ACTIVE));
+            dto.setTotalReservas(reservationRepository.count());
+            dto.setReservasPendientes(
+                    reservationRepository.countByEstado(ReservationStatus.PENDING)
+            );
+            dto.setReservasConfirmadas(
+                    reservationRepository.countByEstado(ReservationStatus.CONFIRMED)
+            );
+            dto.setEspaciosDisponibles(spaceRepository.countByActivoTrue());
+            return dto;
+        }
 
+        dto.setTotalUsuarios(userRepository.countByApartmentCondominiumId(condominiumId));
         dto.setUsuariosPendientes(
-                userRepository.countByEstado(UserStatus.PENDING));
-
+                userRepository.countByEstadoAndApartmentCondominiumId(
+                        UserStatus.PENDING,
+                        condominiumId
+                )
+        );
         dto.setUsuariosActivos(
-                userRepository.countByEstado(UserStatus.ACTIVE));
-
-        dto.setTotalReservas(
-                reservationRepository.count());
-
+                userRepository.countByEstadoAndApartmentCondominiumId(
+                        UserStatus.ACTIVE,
+                        condominiumId
+                )
+        );
+        dto.setTotalReservas(reservationRepository.countBySpaceCondominiumId(condominiumId));
         dto.setReservasPendientes(
-                reservationRepository.countByEstado(
-                        ReservationStatus.PENDING));
-
+                reservationRepository.countByEstadoAndSpaceCondominiumId(
+                        ReservationStatus.PENDING,
+                        condominiumId
+                )
+        );
         dto.setReservasConfirmadas(
-                reservationRepository.countByEstado(
-                        ReservationStatus.CONFIRMED));
-
+                reservationRepository.countByEstadoAndSpaceCondominiumId(
+                        ReservationStatus.CONFIRMED,
+                        condominiumId
+                )
+        );
         dto.setEspaciosDisponibles(
-                spaceRepository.countByActivoTrue());
+                spaceRepository.countByActivoTrueAndCondominiumId(condominiumId)
+        );
 
         return dto;
 

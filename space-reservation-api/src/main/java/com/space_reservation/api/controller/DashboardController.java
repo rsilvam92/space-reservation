@@ -5,6 +5,7 @@ import com.space_reservation.api.service.DashboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -15,8 +16,10 @@ public class DashboardController {
     private final DashboardService dashboardService;
 
     @GetMapping
-    public DashboardDTO dashboard(){
-        return dashboardService.getDashboard();
+    public DashboardDTO dashboard(
+            @RequestParam(required = false) Long condominiumId
+    ) {
+        return dashboardService.getDashboard(condominiumId);
     }
 
 }

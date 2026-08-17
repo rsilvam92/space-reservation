@@ -49,6 +49,7 @@ public class UserMapper {
         dto.setCorreo(user.getCorreo());
         dto.setApartamento(
                 user.getApartment().getSector()+"-"+user.getApartment().getNumero());
+        dto.setCondominiumId(user.getApartment().getCondominium().getId());
         dto.setFechaRegistro(user.getCreatedAt());
         return dto;
     }

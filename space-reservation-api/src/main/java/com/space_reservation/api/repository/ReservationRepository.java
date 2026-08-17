@@ -53,4 +53,11 @@ public interface ReservationRepository
     );
 
     Long countByEstado(ReservationStatus estado);
+
+    Long countBySpaceCondominiumId(Long condominiumId);
+
+    Long countByEstadoAndSpaceCondominiumId(
+            ReservationStatus estado,
+            Long condominiumId
+    );
 }

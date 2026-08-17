@@ -19,4 +19,6 @@ public interface SpaceRepository
 
     Long countByActivoTrue();
 
+    Long countByActivoTrueAndCondominiumId(Long condominiumId);
+
 }
