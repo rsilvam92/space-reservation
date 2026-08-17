@@ -22,6 +22,14 @@ public class SpaceController {
         return spaceService.createSpace(dto);
     }
 
+    @PutMapping("/{id}")
+    public Space update(
+            @PathVariable Long id,
+            @Valid @RequestBody SpaceRequestDTO dto
+    ) {
+        return spaceService.updateSpace(id, dto);
+    }
+
     @GetMapping
     public List<Space> getAll() {
         return spaceService.getAll();

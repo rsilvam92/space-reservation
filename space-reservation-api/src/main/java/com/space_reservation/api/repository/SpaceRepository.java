@@ -17,6 +17,8 @@ public interface SpaceRepository
 
     boolean existsByNombre(String nombre);
 
+    boolean existsByNombreAndIdNot(String nombre, Long id);
+
     Long countByActivoTrue();
 
     Long countByActivoTrueAndCondominiumId(Long condominiumId);

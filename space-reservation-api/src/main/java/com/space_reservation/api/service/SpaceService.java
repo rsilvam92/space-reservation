@@ -10,6 +10,8 @@ public interface SpaceService {
 
     Space createSpace(SpaceRequestDTO space);
 
+    Space updateSpace(Long id, SpaceRequestDTO space);
+
     List<Space> getAll();
 
     List<Space> getByType(SpaceType type);

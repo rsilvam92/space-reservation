@@ -3,6 +3,7 @@ package com.space_reservation.api.service.impl;
 import com.space_reservation.api.dto.request.SpaceRequestDTO;
 import com.space_reservation.api.entity.Condominium;
 import com.space_reservation.api.entity.Space;
+import com.space_reservation.api.entity.SpaceConfiguration;
 import com.space_reservation.api.entity.enums.SpaceType;
 import com.space_reservation.api.repository.CondominiumRepository;
 import com.space_reservation.api.repository.SpaceRepository;
@@ -98,6 +99,64 @@ class SpaceServiceImplTest {
         assertThrows(
                 com.space_reservation.api.exception.BusinessException.class,
                 () -> service.createSpace(request)
+        );
+        verify(spaceRepository, never()).save(any());
+    }
+
+    @Test
+    void updatesSpaceAndItsConfiguration() {
+        Condominium condominium = new Condominium();
+        condominium.setId(2L);
+
+        SpaceConfiguration configuration = new SpaceConfiguration();
+        configuration.setMaxHorasReserva(1);
+
+        Space existing = new Space();
+        existing.setId(8L);
+        existing.setNombre("Cancha antigua");
+        existing.setConfiguracion(configuration);
+        configuration.setSpace(existing);
+
+        SpaceRequestDTO request = new SpaceRequestDTO();
+        request.setNombre("Cancha de padel");
+        request.setDescripcion("Cancha principal");
+        request.setTipo(SpaceType.CUSTOM);
+        request.setTipoPersonalizado("Cancha de padel");
+        request.setCondominioId(2L);
+        request.setMaxHorasReserva(2);
+        request.setMaxReservasSemana(3);
+        request.setRequiereConfirmacion(true);
+        request.setMinutosConfirmacion(30);
+        request.setActivo(false);
+
+        when(spaceRepository.findById(8L)).thenReturn(Optional.of(existing));
+        when(spaceRepository.existsByNombreAndIdNot("Cancha de padel", 8L)).thenReturn(false);
+        when(condominiumRepository.findById(2L)).thenReturn(Optional.of(condominium));
+        when(spaceRepository.save(existing)).thenReturn(existing);
+
+        Space updated = service.updateSpace(8L, request);
+
+        assertSame(existing, updated);
+        assertEquals("Cancha de padel", updated.getNombre());
+        assertEquals(SpaceType.CUSTOM, updated.getTipo());
+        assertEquals("Cancha de padel", updated.getTipoPersonalizado());
+        assertSame(condominium, updated.getCondominium());
+        assertEquals(false, updated.getActivo());
+        assertEquals(2, updated.getConfiguracion().getMaxHorasReserva());
+        assertEquals(3, updated.getConfiguracion().getMaxReservasSemana());
+        assertTrue(updated.getConfiguracion().getRequiereConfirmacion());
+        assertEquals(30, updated.getConfiguracion().getMinutosConfirmacion());
+        verify(spaceRepository).save(existing);
+    }
+
+    @Test
+    void rejectsUpdateForUnknownSpace() {
+        SpaceRequestDTO request = new SpaceRequestDTO();
+        when(spaceRepository.findById(999L)).thenReturn(Optional.empty());
+
+        assertThrows(
+                com.space_reservation.api.exception.ResourceNotFoundException.class,
+                () -> service.updateSpace(999L, request)
         );
         verify(spaceRepository, never()).save(any());
     }

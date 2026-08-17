@@ -26,4 +26,7 @@ public class SpaceRequestDTO {
 
     private Integer maxHorasReserva;
     private Integer maxReservasSemana;
+    private Boolean requiereConfirmacion;
+    private Integer minutosConfirmacion;
+    private Boolean activo;
 }
