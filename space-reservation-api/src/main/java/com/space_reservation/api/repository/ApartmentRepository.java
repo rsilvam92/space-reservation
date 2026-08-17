@@ -11,6 +11,8 @@ public interface ApartmentRepository
 
     List<Apartment> findByCondominiumId(Long condominiumId);
 
+    List<Apartment> findByCondominiumIdOrderBySectorAscNumeroAsc(Long condominiumId);
+
     Optional<Apartment> findByCondominiumIdAndNumero(
             Long condominiumId,
             String numero

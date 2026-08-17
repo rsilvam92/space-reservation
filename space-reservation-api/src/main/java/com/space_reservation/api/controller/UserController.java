@@ -2,11 +2,15 @@ package com.space_reservation.api.controller;
 
 import com.space_reservation.api.dto.request.UserRegisterDTO;
 import com.space_reservation.api.dto.response.PendingUserDTO;
+import com.space_reservation.api.dto.response.RegistrationApartmentDTO;
+import com.space_reservation.api.dto.response.RegistrationCondominiumDTO;
 import com.space_reservation.api.dto.response.UserResponseDTO;
 import com.space_reservation.api.entity.User;
 import com.space_reservation.api.exception.BusinessException;
 import com.space_reservation.api.exception.ResourceNotFoundException;
 import com.space_reservation.api.mapper.UserMapper;
+import com.space_reservation.api.repository.ApartmentRepository;
+import com.space_reservation.api.repository.CondominiumRepository;
 import com.space_reservation.api.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -24,6 +28,39 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final CondominiumRepository condominiumRepository;
+    private final ApartmentRepository apartmentRepository;
+
+    @GetMapping("/register/condominiums")
+    public List<RegistrationCondominiumDTO> getRegistrationCondominiums() {
+        return condominiumRepository.findByActivoTrueOrderByNombreAsc()
+                .stream()
+                .map(condominium -> new RegistrationCondominiumDTO(
+                        condominium.getId(),
+                        condominium.getNombre(),
+                        condominium.getCiudad()
+                ))
+                .toList();
+    }
+
+    @GetMapping("/register/condominiums/{condominiumId}/apartments")
+    public List<RegistrationApartmentDTO> getRegistrationApartments(
+            @PathVariable Long condominiumId
+    ) {
+        if (!condominiumRepository.existsById(condominiumId)) {
+            throw new ResourceNotFoundException("El condominio seleccionado no existe");
+        }
+
+        return apartmentRepository.findByCondominiumIdOrderBySectorAscNumeroAsc(condominiumId)
+                .stream()
+                .map(apartment -> new RegistrationApartmentDTO(
+                        apartment.getId(),
+                        apartment.getSector(),
+                        apartment.getNumero(),
+                        apartment.getEstado()
+                ))
+                .toList();
+    }
 
     @PostMapping("/register")
     public UserResponseDTO register(@Valid @RequestBody UserRegisterDTO registerDTO) {
